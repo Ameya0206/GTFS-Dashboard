@@ -1,14 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Proxy API calls to the FastAPI backend during development so the frontend
-// dev server (port 5173) can reach the backend (port 8000) without CORS issues.
+// In production (Vercel), VITE_API_URL is set to the deployed backend URL.
+// In local dev, requests are proxied to localhost:8000.
+const backendUrl = process.env.VITE_API_URL || 'http://localhost:8000'
+
 export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/validate': 'http://localhost:8000',
-      '/health': 'http://localhost:8000',
+      '/validate': backendUrl,
+      '/health': backendUrl,
     },
   },
 })

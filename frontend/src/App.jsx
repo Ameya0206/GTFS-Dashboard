@@ -22,7 +22,8 @@ export default function App() {
     setError(null)
     setReport(null)
     try {
-      const res = await fetch('/validate', { method: 'POST', body: formData })
+      const base = import.meta.env.VITE_API_URL ?? ''
+      const res = await fetch(`${base}/validate`, { method: 'POST', body: formData })
       if (!res.ok) {
         let detail = `Server error ${res.status}`
         try {
